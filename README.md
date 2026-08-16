@@ -207,4 +207,3 @@ Now that you know about all the details of the model, if you want to use it, jus
 
 The code is written in OOP format, so you can easily modify or extend the **class MMT** to fit cases of more complex situations. You can also try modifying the assumptions such as making it to be a stochastic optimization problem or so on.
 
-333333
