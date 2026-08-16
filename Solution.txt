@@ -1,8 +1,8 @@
 Solution
 Number of goods: 8
-Total cost: 196959.0
+Total cost: 196958.99999999924
 Transportation cost: 6645.0
-Warehouse cost: 1410.0
+Warehouse cost: 1409.9999999992451
 Tax cost: 188904.0
 ------------------------------------
 Goods-1  Category: Honey

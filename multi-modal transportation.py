@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Mar 15 09:32:04 2018
 
-@author: Ken Huang
-"""
 from docplex.mp.model import Model
 from itertools import product
 import numpy as np
@@ -71,7 +67,7 @@ class MMT:
 
         bigM = 100000
         route = route[route['Feasibility'] == 1]
-        route['Warehouse Cost'][route['Warehouse Cost'].isnull()] = bigM
+        route.loc[route['Warehouse Cost'].isnull(), 'Warehouse Cost'] = bigM
         route = route.reset_index()
 
         portSet = set(route['Source']) | set(route['Destination'])
@@ -367,7 +363,6 @@ def transform(filePath):
     be processed by the operation research model.'''
     order = pd.read_excel(filePath, sheet_name='Order Information')
     route = pd.read_excel(filePath, sheet_name='Route Information')
-    order['Tax Percentage'][order['Journey Type'] == 'Domestic'] = 0
     route['Cost'] = route[route.columns[7:12]].sum(axis=1)
     route['Time'] = np.ceil(route[route.columns[14:18]].sum(axis=1) / 24)
     route = route[list(route.columns[0:4]) + ['Fixed Freight Cost', 'Time', \
@@ -383,11 +378,10 @@ def transform(filePath):
 
 if __name__ == '__main__':
     order, route = transform("model data.xlsx")
-    m = MMT()
-    # m = MMT(framework='CVXPY') # for open source framework
+    m = MMT(framework='CVXPY')
     m.set_param(route, order)
     m.build_model()
-    m.solve_model()
+    m.solve_model(solver=cp.HIGHS)
     txt = m.txt_solution(route, order)
     with open("Solution.txt", "w") as text_file:
         text_file.write(txt)
